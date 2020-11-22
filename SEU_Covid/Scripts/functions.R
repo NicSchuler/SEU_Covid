@@ -13,8 +13,8 @@ quadraticUtility = function(Cost, Deaths, CostPerDeath){
 }
 
 # cost function------------
-cost = function(unemployed, unemployedExp, wage, months, subventions, defaultRate, creditVolume){
-  costs = (unemployed-unemployedExp)*0.8*wage*months + subventions + defaultRate*creditVolume
+cost = function(unemployed, unemployedExp, workbase, wage, months, subventions, defaultRate, creditVolume){
+  costs = (unemployed-unemployedExp)*workbase*0.8*wage*months + subventions + defaultRate*creditVolume
   return(costs)
 }
 

@@ -19,11 +19,12 @@ In order to assess the impact of the Covid-19 pandemic, we will model the econom
 
 The economic impact shall be evaluated based on the costs, which occur through the different states. It is assumed, that the costs of the pandemic, which are taken into account by the swiss federal council, only consist of the additional costs (compared to a world without Covid-19), that are payed by the swiss government (e.g. difference in governmental spending due to Covid-19). The costs are assumed to be:
 
-$$Cost = 0.8*(u^*-u^e)*wage*duration + subventions + d*CreditVolume$$
+$$Cost = (u^*-u^e)*workbase*0.8*wage*duration + subventions + d*CreditVolume$$
 with:
 * $u^*$ being the amount of unemployed people (incl. short-time work ("Kurzarbeit"));
 * $u^e$ being the amount of unemployed people expected, if no pandempic would happen (assumed to remain constant compared to 2019, 2.3% according to; [seco](https://www.seco.admin.ch/seco/de/home/seco/nsb-news/medienmitteilungen-2020.msg-id-77726.html#:~:text=Bern%2C%2010.01.2020%20%2D%20Das,Arbeitslosenquote%20von%202%2C3%25.));
-* $wage$ is the average monthly wage in Switzerland (6656 CHF, nominally adjusted to 2018 levels, according to [bfs](https://www.bfs.admin.ch/bfs/de/home/statistiken/arbeit-erwerb/loehne-erwerbseinkommen-arbeitskosten.html));
+* $workbase$ being the amount of people in the labour market in full time equivalent (FTE), assumed to be 4.23 mio according to [bfs](https://www.bfs.admin.ch/bfs/de/home/statistiken/arbeit-erwerb/erwerbstaetigkeit-arbeitszeit/erwerbstaetige/entwicklung-erwerbstaetigenzahlen.assetdetail.14715093.html);
+* $wage$ is the average monthly wage for 100% employments in Switzerland (6656 CHF, nominally adjusted to 2018 levels, according to [bfs](https://www.bfs.admin.ch/bfs/de/home/statistiken/arbeit-erwerb/loehne-erwerbseinkommen-arbeitskosten.html));
 * $duration$ is the average length of additional unemployment in months;
 * $subventions$ are directly payed, non refundable payments to aid firms, institutions, clubs etc;
 * $d$ is the credit default rate on governmentally backed credits;
