@@ -1,0 +1,10 @@
+Scenario_R0;Scenario_CFR;Prior;HealthCost_LD;HealthCost_NM
+low;low;0.11;10000;1000
+medium;low;0.11;20000;2000
+high;low;0.11;30000;3000
+low;medium;0.11;40000;4000
+medium;medium;0.11;50000;5000
+high;medium;0.11;60000;6000
+low;high;0.11;70000;7000
+medium;high;0.11;80000;8000
+high;high;0.11;90000;9000

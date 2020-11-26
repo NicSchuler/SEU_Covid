@@ -7,12 +7,15 @@ library(shiny)
 load("../Functions/f_cost.R")
 load("../Functions/f_linearUtility.R")
 load("../Functions/f_quadraticUtility.R")
+load("../Functions/f_gatherCostHealth.R")
 
 # Import data---------
 load("../Data/stateData.Rdata")
+load("../Data/EconomicCosts.RData")
+load("../Data/Test_TotalCost.RData")
 
 # Define state variable
-Acts = c("Full Lockdown", "Partial Lockdown", "No measures")
+Acts = c("Full Lockdown", "Partial Lockdown")
 
 # server--------------
 # Define server logic
@@ -47,76 +50,58 @@ shinyServer(function(input, output) {
   unemployedExp = reactive({input$unemploymentExp})
   utilityType = reactive({input$utilityType})
   
-  # Calculate costs based on inputs
-  FL_cost = reactive({cost(unemployed = stateData$FL_unemployment, unemployedExp = unemployedExp(),
-                 workbase = workbase(), wage = wage(), months = stateData$FL_duration,
-                 subventions = stateData$FL_subventions, defaultRate = stateData$FL_default,
-                 creditVolume = stateData$FL_credits)})
-  
-  PL_cost = reactive({cost(unemployed = stateData$PL_unemployment, unemployedExp = unemployedExp(),
-                 workbase = workbase(), wage = wage(), months = stateData$PL_duration,
-                 subventions = stateData$PL_subventions, defaultRate = stateData$PL_default,
-                 creditVolume = stateData$PL_credits)})
-  
-  NM_cost = reactive({cost(unemployed = stateData$NM_unemployment, unemployedExp = unemployedExp(),
-                 workbase = workbase(), wage = wage(), months = stateData$NM_duration,
-                 subventions = stateData$NM_subventions, defaultRate = stateData$NM_default,
-                 creditVolume = stateData$NM_credits)})
+  # Bring Economic and Health costs together
+  EconCost = EconCost
+  HealthCost = Test_HC
+  SEU_TotalCostStates = gatherCostHealth(
+    # Economic Variables
+    EconCostScenario = EconCost$EconShockExp, EconCostPrior = EconCost$Prior, EconCostLD = EconCost$EconCostsLd, EconCostNM = EconCost$EconCostsNoLd,
+    # Health Variables
+    HealthScenarioR = HealthCost$Scenario_R0, HealthScenarioCFR = HealthCost$Scenario_CFR, HealthPrior = HealthCost$Prior, HealthCostsLD = HealthCost$HealthCost_LD, HealthCostsNM = HealthCost$HealthCost_NM)
   
   # Calculate expected utility based on inputs
   FL_ExpUtility = reactive({
     if(utilityType()=="linear"){
-      sum(stateData$priors*linearUtility(Cost=FL_cost(), Deaths = stateData$FL_deaths, CostPerDeath = costPerDeath()))}
+      sum(SEU_TotalCostStates$Prior*linearUtility(EconCost = SEU_TotalCostStates$EconCostLD, HealthCost = SEU_TotalCostStates$HealthCostsLD))}
     else{
-      sum(stateData$priors*quadraticUtility(Cost=FL_cost(), Deaths = stateData$FL_deaths, CostPerDeath = costPerDeath()))
+      sum(SEU_TotalCostStates$Prior*quadraticUtility(EconCost = SEU_TotalCostStates$EconCostLD, HealthCost = SEU_TotalCostStates$HealthCostsLD))
     }
   })
   
   PL_ExpUtility = reactive({
     if(utilityType()=="linear"){
-      sum(stateData$priors*linearUtility(Cost=PL_cost(), Deaths = stateData$PL_deaths, CostPerDeath = costPerDeath()))}
+      sum(SEU_TotalCostStates$Prior*linearUtility(EconCost = SEU_TotalCostStates$EconCostNM, HealthCost = SEU_TotalCostStates$HealthCostsNM))}
     else{
-      sum(stateData$priors*quadraticUtility(Cost=PL_cost(), Deaths = stateData$PL_deaths, CostPerDeath = costPerDeath()))
+      sum(SEU_TotalCostStates$Prior*quadraticUtility(EconCost = SEU_TotalCostStates$EconCostNM, HealthCost = SEU_TotalCostStates$HealthCostsNM))
     }
   })
   
-  NM_ExpUtility = reactive({
-    if(utilityType()=="linear"){
-      sum(stateData$priors*linearUtility(Cost=NM_cost(), Deaths = stateData$NM_deaths, CostPerDeath = costPerDeath()))}
-    else{
-      sum(stateData$priors*quadraticUtility(Cost=NM_cost(), Deaths = stateData$NM_deaths, CostPerDeath = costPerDeath()))
-    }
-  })
-  
-  ExpUtility = reactive({c(FL_ExpUtility(), PL_ExpUtility(), NM_ExpUtility())})
+  ExpUtility = reactive({c(FL_ExpUtility(), PL_ExpUtility())})
   
   # Calculate expected costs based on inputs
-  FL_ExpCost = reactive({sum(stateData$priors*FL_cost())})
+  FL_ExpEconCost = sum(SEU_TotalCostStates$Prior*SEU_TotalCostStates$EconCostLD)
   
-  PL_ExpCost = reactive({sum(stateData$priors*PL_cost())})
+  PL_ExpEconCost = sum(SEU_TotalCostStates$Prior*SEU_TotalCostStates$EconCostNM)
   
-  NM_ExpCost = reactive({sum(stateData$priors*NM_cost())})
-  
-  ExpCost = reactive({c(FL_ExpCost(), PL_ExpCost(), NM_ExpCost())})
+  ExpEconCost = c(FL_ExpEconCost, PL_ExpEconCost)
   
   # Calculate expected death cases
-  FL_ExpDeaths = sum(stateData$priors*stateData$FL_deaths)
+  FL_ExpDeaths = sum(SEU_TotalCostStates$Prior*SEU_TotalCostStates$FL_deaths)
   
-  PL_ExpDeaths = sum(stateData$priors*stateData$PL_deaths)
+  PL_ExpDeaths = sum(SEU_TotalCostStates$Prior*SEU_TotalCostStates$PL_deaths)
   
-  NM_ExpDeaths = sum(stateData$priors*stateData$NM_deaths)
-  
-  ExpDeaths = c(FL_ExpDeaths, PL_ExpDeaths, NM_ExpDeaths)
+  ExpDeaths = c(FL_ExpDeaths, PL_ExpDeaths)
   
   # create a dataframe for all plots
-  plotData = reactive({data.frame(Acts=Acts, ExpUtility=ExpUtility(), ExpCost=ExpCost(), ExpDeaths=ExpDeaths)})
+  plotData = reactive({data.frame(Acts=Acts, ExpUtility=ExpUtility(), ExpEconCost=ExpEconCost, ExpDeaths=ExpDeaths)})
   
   # Plot the expected utility
   offsetU = reactive({abs(min(plotData()$ExpUtility))*1.4})
-  SEU_plot = reactive({ggplot(plotData(), aes(x=reorder(Acts,ExpUtility), y=ExpUtility+offsetU())) +
+  SEU_plot = reactive({
+    ggplot(plotData(), aes(x=reorder(Acts,ExpUtility), y=ExpUtility+offsetU())) +
     geom_bar(stat="identity", fill="darkblue") +
     coord_flip() +
-    geom_text(aes(label = round(ExpUtility,0)), size=5, hjust=1.2, colour = "white", fontface=2) +
+    geom_text(aes(label = round(ExpUtility,3)), size=5, hjust=1.2, colour = "white", fontface=2) +
     labs(x=NULL, y=NULL) +
     theme(axis.text.x=element_blank(),
           axis.ticks.x=element_blank(),
@@ -127,11 +112,11 @@ shinyServer(function(input, output) {
   output$SEUplot = renderPlot({SEU_plot()})
   
   # Plot the expected costs
-  offsetC = reactive({abs(min(plotData()$ExpCost))*0})
-  ExpCost_Plot = reactive({ggplot(plotData(), aes(x=reorder(Acts,-ExpCost), y=ExpCost+offsetC())) +
+  offsetC = reactive({abs(min(plotData()$ExpEconCost))*0})
+  ExpCost_Plot = reactive({ggplot(plotData(), aes(x=reorder(Acts,-ExpEconCost), y=ExpEconCost+offsetC())) +
       geom_bar(stat="identity", fill="darkred") +
       coord_flip() +
-      geom_text(aes(label = round(ExpCost/1000000000,3)), size=5, hjust=1.2, colour = "white", fontface=2) +
+      geom_text(aes(label = round(ExpEconCost/1000000000,3)), size=5, hjust=1.2, colour = "white", fontface=2) +
       labs(x=NULL, y=NULL) +
       theme(axis.text.x=element_blank(),
             axis.ticks.x=element_blank(),
@@ -155,5 +140,10 @@ shinyServer(function(input, output) {
             panel.background = element_blank())})
   
   output$ExpDeathPlot = renderPlot({ExpDeath_Plot()})
+  
+  # Render Table for Economic and Health costs
+  output$TotalCostStates = renderTable({
+    SEU_TotalCostStates
+  }, options=list(searching=FALSE, paging=TRUE), rownames=FALSE, filter="top")
 
 })

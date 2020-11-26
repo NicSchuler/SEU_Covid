@@ -20,10 +20,22 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                              
                              # first tab "Explanations"--------
                              tabPanel("Explanations", h1("Explanation of the methodology"), br(),
+                                      tabsetPanel(
+                                        tabPanel("Savage Expected Utility",
                                       
-                                      withMathJax(includeMarkdown("Description.md"))
+                                        withMathJax(includeMarkdown("Description.md"))),
+                                        
+                                        tabPanel("Economic Model"),
+                                        
+                                        tabPanel("Health Model"),
+                                        
+                                        tabPanel("Utility function"),
+                                        
+                                        tabPanel("Underlying assumptions")
+                                      
+                                      
                                  
-                             ),
+                             )),
                              
                              # second tab "Model inputs"--------
                              tabPanel("Model Inputs",
@@ -74,24 +86,32 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                         
                                         # Main-Panel for the results
                                         mainPanel(
+                                          # Initialize Sub-Tabs for decision making--------
                                           tabsetPanel(
                                             
-                                            # Sub-Tab for assessing the cost
+                                            # Sub-Tab for utility-----------
                                             tabPanel("Utility",
                                                      br(),
                                                      p("Savage Expected Utility, based on all assumtions and factors."),
                                                      plotOutput("SEUplot")
                                                      ),
+                                            # Sub-Tab for Economic Cost--------
                                             tabPanel("Economic Impact",
                                                      br(),
                                                      p("Expected economic impact in terms of governmental costs, based on all assumtions and factors. In Billion CHF."),
                                                      plotOutput("ExpCostPlot")
                                                      ),
+                                            # Sub-Tab for Health-Cost---------
                                             tabPanel("Health Impact",
                                                      br(),
                                                      p("Expected health impact in terms of death cases, based on all assumtions and factors."),
                                                      plotOutput("ExpDeathPlot")
-                                                     )
+                                                     ),
+                                            # Sub-Tab for States
+                                            tabPanel("States",
+                                                     br(),
+                                                     p("All states based on all assumtions and factors."),
+                                                     tableOutput("TotalCostStates"))
                                           )
                                         )
                                       )
