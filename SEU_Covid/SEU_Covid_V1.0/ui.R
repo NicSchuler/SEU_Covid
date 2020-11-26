@@ -74,14 +74,18 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                       # initialize Sidebar-Layout
                                       sidebarLayout(
                                         # Sidebar-Panel for setting the Parameters
-                                        sidebarPanel(p(strong("Utility function")),
+                                        sidebarPanel(p(strong("Change Parameters")),
                                                      selectInput("utilityType","Type of utility function", choices=c("linear","quadratic"), selected = "linear"),
-                                                     br(),
-                                                     p(strong("Economic factors")),
+                                                     p(strong("General factors")),
                                                      sliderInput("costPerYear", "Cost per lost year of lifetime", 25000, 500000, step=5000, value=100000),
-                                                     sliderInput("meanWage", "Mean wage before unemployment", 4000, 10000, step=1, value=6656),
-                                                     sliderInput("workbase", "Workbase in Switzerland", 3000000, 6000000, step=10000, value=4230000),
-                                                     sliderInput("unemploymentExp", "Expected Unemployment (without Covid)", 0, 1, step=0.001, value=0.023)
+                                                     sliderInput("t_Ld", "Lockdown Duration in days", 0, 180, step=1, value=33),
+                                                     p(strong("Economic factors")),
+                                                     sliderInput("d_CV", "Credit default rate", 0, 1, step=0.001, value=0.05),
+                                                     sliderInput("CV_SME", "Credit volume for SME", 0, 100000000000, step=1000000000, value=20000000000),
+                                                     sliderInput("CV_LE", "Credit volume for LE", 0, 100000000000, step=1000000000, value=20000000000),
+                                                     sliderInput("OEE_FL", "Other extraordinary expenses", 0, 100000000000, step=1000000000, value=20000000000),
+                                                     sliderInput("p_pessimistic", "Prior for pessimistic scenario", 0, 1, step=0.001, value=1/3),
+                                                     sliderInput("p_neutral", "Prior for neutral scenario", 0, 1, step=0.001, value=1/3)
                                                      ),
                                         
                                         # Main-Panel for the results
