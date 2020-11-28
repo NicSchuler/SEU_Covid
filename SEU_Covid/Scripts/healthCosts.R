@@ -13,9 +13,9 @@ get_health_costs <- function(
     ##########################################
     ## import data
     ##########################################
-    load("Data/lifeExpectancy.RData")
-    load("Data/caseFatalityGrouped.RData")
-    load("Data/cases.RData")
+    load("../Data/lifeExpectancy.RData")
+    load("../Data/caseFatalityGrouped.RData")
+    load("../Data/cases.RData")
     
     
     ##########################################
@@ -183,3 +183,4 @@ get_health_costs <- function(
     return(output)
 }
 
+save(get_health_costs, file="Functions/f_get_health_costs.R")
