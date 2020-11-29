@@ -65,30 +65,30 @@ get_health_costs <- function(
     ##########################################
     ## calculate deaths
     ##########################################
-    partial_lockdown_low_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct, digits = 0))
-    partial_lockdown_low_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct, digits = 0))
-    partial_lockdown_low_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct, digits = 0))
+    partial_lockdown_low_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct *0.01, digits = 0))
+    partial_lockdown_low_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct*0.01, digits = 0))
+    partial_lockdown_low_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct*0.01, digits = 0))
     
-    partial_lockdown_medium_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct, digits = 0))
-    partial_lockdown_medium_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct, digits = 0))
-    partial_lockdown_medium_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct, digits = 0))
+    partial_lockdown_medium_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct*0.01, digits = 0))
+    partial_lockdown_medium_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct*0.01, digits = 0))
+    partial_lockdown_medium_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct*0.01, digits = 0))
     
-    partial_lockdown_high_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct, digits = 0))
-    partial_lockdown_high_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct, digits = 0))
-    partial_lockdown_high_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct, digits = 0))
+    partial_lockdown_high_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct*0.01, digits = 0))
+    partial_lockdown_high_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct*0.01, digits = 0))
+    partial_lockdown_high_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_partial_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct*0.01, digits = 0))
     
     
-    full_lockdown_low_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct, digits = 0))
-    full_lockdown_low_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct, digits = 0))
-    full_lockdown_low_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct, digits = 0))
+    full_lockdown_low_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct*0.01, digits = 0))
+    full_lockdown_low_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct*0.01, digits = 0))
+    full_lockdown_low_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_low_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct*0.01, digits = 0))
     
-    full_lockdown_medium_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct, digits = 0))
-    full_lockdown_medium_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct, digits = 0))
-    full_lockdown_medium_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct, digits = 0))
+    full_lockdown_medium_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct*0.01, digits = 0))
+    full_lockdown_medium_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct*0.01, digits = 0))
+    full_lockdown_medium_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_medium_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct*0.01, digits = 0))
     
-    full_lockdown_high_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct, digits = 0))
-    full_lockdown_high_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct, digits = 0))
-    full_lockdown_high_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct, digits = 0))
+    full_lockdown_high_rr_low_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityLowPrct*0.01, digits = 0))
+    full_lockdown_high_rr_medium_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityMediumPrct*0.01, digits = 0))
+    full_lockdown_high_rr_high_fr <- data.frame(ageGroup = cases$ageGroup, Deaths = round(total_cases_full_lockdown_high_rr$totalCases * caseFatalityGrouped$caseFatalityHighPrct*0.01, digits = 0))
     
     
     ##########################################
