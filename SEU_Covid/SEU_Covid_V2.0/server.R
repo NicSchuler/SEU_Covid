@@ -23,6 +23,7 @@ load("../Data/Tax_Data.Rdata")
 
 # Define state variable
 Acts = c("Full Lockdown", "Partial Lockdown")
+Health_Prior = c(1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9)
 
 # server--------------
 # Define server logic
@@ -73,7 +74,7 @@ shinyServer(function(input, output, session) {
   REPRODUCTION_RATE_DISCOUNT_LOCKDOWN = reactive({input$REPRODUCTION_RATE_DISCOUNT_LOCKDOWN})
   
   # Bring Economic and Health costs together
-  EconCost = reactive({EconCostCalc(PUB_Data = PUB_Data, Tax_Data = Tax_Data, t_Ld = t_Ld(), d_CV = d_CV(), CV_SME = CV_SME(), CV_LE = CV_LE(), OEE_FL = OEE_FL(),
+  EconCost = reactive({EconCostCalc(PUB_Data = PUB_Data, Tax_Data = Tax_Data, t_Ld = t_Ld()/30, d_CV = d_CV(), CV_SME = CV_SME(), CV_LE = CV_LE(), OEE_FL = OEE_FL(),
                                      p_pessimistic = p_pessimistic(), p_neutral = p_neutral(), p_optimistic = p_optimistic())})
   HealthCost = reactive({get_health_costs(INCUBATION_TIME_DAYS = INCUBATION_TIME_DAYS(), BASIC_REPRODUCTION_NUMBER_LOW = BASIC_REPRODUCTION_NUMBER_LOW(),
                                                             BASIC_REPRODUCTION_NUMBER_MEDIUM = BASIC_REPRODUCTION_NUMBER_MEDIUM(), BASIC_REPRODUCTION_NUMBER_HIGH = BASIC_REPRODUCTION_NUMBER_HIGH(),
@@ -83,7 +84,7 @@ shinyServer(function(input, output, session) {
     # Economic Variables
     EconCostScenario = EconCost()$EconShockExp, EconCostPrior = EconCost()$Prior, EconCostLD = EconCost()$EconCostsLd, EconCostNM = EconCost()$EconCostsNoLd,
     # Health Variables
-    HealthScenarioR = HealthCost()$scenario_r0, HealthScenarioCFR = HealthCost()$scenario_fr, HealthPrior = HealthCost()$prior, HealthCostsLD = HealthCost()$health_cost_fld, HealthCostsNM = HealthCost()$health_cost_pld)})
+    HealthScenarioR = HealthCost()$scenario_r0, HealthScenarioCFR = HealthCost()$scenario_fr, HealthPrior = Health_Prior, HealthCostsLD = HealthCost()$health_cost_fld, HealthCostsNM = HealthCost()$health_cost_pld)})
   
   # Calculate expected utility based on inputs
   FL_ExpUtility = reactive({
@@ -162,8 +163,9 @@ shinyServer(function(input, output, session) {
   output$ExpCostPlot = renderPlot({ExpCost_Plot()})
   
   # Plot the expected total death cases
+  offsetD = reactive({abs(max(plotData()$ExpDeaths))*0.1})
   ExpDeath_Plot = reactive({
-    ggplot(plotData(), aes(x=reorder(Acts,-ExpDeaths), y=ExpDeaths)) +
+    ggplot(plotData(), aes(x=reorder(Acts,-ExpDeaths), y=ExpDeaths+offsetD())) +
       geom_bar(stat="identity", fill="black") +
       coord_flip() +
       geom_text(aes(label = ExpDeaths), size=5, hjust=1.2, colour = "white", fontface=2) +
@@ -182,7 +184,7 @@ shinyServer(function(input, output, session) {
       geom_bar(stat="identity", position = "dodge") +
       coord_flip() +
       labs(x="Age Group", y="Number of cases", fill="Scenario") +
-      scale_x_continuous(limits = c(0,80), breaks = c(10*1:8)) +
+      scale_x_continuous(limits = c(-5,85), breaks = c(10*0:8)) +
       theme_classic()
   })
   
