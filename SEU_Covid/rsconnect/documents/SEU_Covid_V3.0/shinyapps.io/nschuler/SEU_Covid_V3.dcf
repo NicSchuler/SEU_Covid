@@ -1,0 +1,12 @@
+name: SEU_Covid_V3
+title: SEU_Covid_V3
+username:
+account: nschuler
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3319033
+bundleId: 3919311
+url: https://nschuler.shinyapps.io/SEU_Covid_V3/
+when: 1606663632.99281
+asMultiple: FALSE
+asStatic: FALSE

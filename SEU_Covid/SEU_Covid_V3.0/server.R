@@ -7,16 +7,16 @@ library(reshape2)
 library(rsconnect)
 
 # load own functions--------------
-load("../Functions/f_linearUtility.R")
-load("../Functions/f_quadraticUtility.R")
-load("../Functions/f_gatherCostHealth.R")
-load("../Functions/f_EconCostCalc.R")
-load("../Functions/f_get_health_costs.R")
-load("../Functions/f_get_deaths.R")
+load("f_linearUtility.R")
+load("f_quadraticUtility.R")
+load("f_gatherCostHealth.R")
+load("f_EconCostCalc.R")
+load("f_get_health_costs.R")
+load("f_get_deaths.R")
 
 # Import data---------
-load("../Data/PUB_Data.Rdata")
-load("../Data/Tax_Data.Rdata")
+load("PUB_Data.Rdata")
+load("Tax_Data.Rdata")
 
 # Define state variable
 Acts = c("Full Lockdown", "Partial Lockdown")
