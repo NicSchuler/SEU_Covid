@@ -18,61 +18,7 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                   # Initialize tab-layout
                   navbarPage(title="Savage Expected Utility",
                              
-                             # first tab "Explanations"--------
-                             tabPanel("Explanations", h1("Explanation of the methodology"), br(),
-                                      tabsetPanel(
-                                        tabPanel("Savage Expected Utility",
-                                                 
-                                                 withMathJax(includeMarkdown("Description_V0.md"))),
-                                        
-                                        tabPanel("General Approach",
-                                                 
-                                                 withMathJax(includeMarkdown("GeneralApproach.md"))),
-                                        
-                                        tabPanel("Economic Model"),
-                                        
-                                        tabPanel("Health Model"),
-                                        
-                                        tabPanel("Utility function",
-                                                 
-                                                 withMathJax(includeMarkdown("UtilityFunction.md"))),
-                                        
-                                        tabPanel("Underlying assumptions")
-                                      
-                                      
-                                 
-                             )),
-                             
-                             # second tab "Model inputs"--------
-                             tabPanel("Model Inputs",
-                                      
-                                      # Header
-                                      h1("View the model inputs and assumptions"),
-                                      p("FL refers to full lockdown, PL to partial lockdown and NM to no measures in the variable's suffixes"),
-                                      br(),
-                                      
-                                      # first sub-tab "Economic Inputs"--------
-                                      tabsetPanel(tabPanel("Economic Inputs",
-                                        h2("Economic inputs"),
-                                        p(strong("Unemployment and its duration")),
-                                        tableOutput("stateUnempDuration"), 
-                                        br(),
-                                        p(strong("Subventions")),
-                                        tableOutput("stateSubventions"),
-                                        br(),
-                                        p(strong("Credit defaults")),
-                                        tableOutput("stateCredits")
-                                      ),
-                                      
-                                      # second sub-tab "Health Inputs"--------
-                                      tabPanel("Health inputs",
-                                        h2("Health inputs"),
-                                        p(strong("Death cases")),
-                                        tableOutput("stateDeaths")
-                                      )
-                             )),
-                             
-                             # third tab "Decision making"--------
+                             # main tab "Decision making"--------
                              tabPanel("Decision making",
                                       h1("Assess the optimal decision"),
                                       p("based on variable inputs, which can be set on the left hand side."),

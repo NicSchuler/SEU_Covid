@@ -29,28 +29,6 @@ Health_Prior = c(1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9)
 # Define server logic
 shinyServer(function(input, output, session) {
   
-  # Tables for model inputs------
-  # Table: Unemployment and its duration
-  output$stateUnempDuration = renderTable({
-    stateData[,c(1:8)] 
-  }, options=list(searching=FALSE, paging=TRUE), rownames=FALSE, filter="top")
-  
-  # Table: Subventions
-  output$stateSubventions = renderTable({
-    stateData[,c(1,2,9:11)] 
-  }, options=list(searching=FALSE, paging=TRUE), rownames=FALSE, filter="top")
-  
-  # Table: Credit default rate and credit volume
-  output$stateCredits = renderTable({
-    stateData[,c(1,2,12:17)] 
-  }, options=list(searching=FALSE, paging=TRUE), rownames=FALSE, filter="top")
-  
-  # Table: death cases
-  output$stateDeaths = renderTable({
-    stateData[,c(1,2,18:20)] 
-  }, options=list(searching=FALSE, paging=TRUE), rownames=FALSE, filter="top")
-  
-  # Decision making-----------
   # Receive Inputs----------
   COST_LOST_YEAR = reactive({input$costPerYear})
   utilityType = reactive({input$utilityType})
