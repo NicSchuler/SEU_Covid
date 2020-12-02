@@ -6,6 +6,8 @@ library(shiny)
 library(reshape2)
 library(rsconnect)
 
+setwd("./")
+
 # load own functions--------------
 load("f_linearUtility.R")
 load("f_quadraticUtility.R")
