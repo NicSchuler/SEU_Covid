@@ -462,7 +462,7 @@ shinyServer(function(input, output, session) {
   BASIC_REPRODUCTION_NUMBER_LOW = reactive({input$BASIC_REPRODUCTION_NUMBER_LOW})
   BASIC_REPRODUCTION_NUMBER_MEDIUM = reactive({input$BASIC_REPRODUCTION_NUMBER_MEDIUM})
   BASIC_REPRODUCTION_NUMBER_HIGH = reactive({input$BASIC_REPRODUCTION_NUMBER_HIGH})
-  REPRODUCTION_RATE_DISCOUNT_LOCKDOWN = reactive({input$REPRODUCTION_RATE_DISCOUNT_LOCKDOWN})
+  REPRODUCTION_RATE_DISCOUNT_LOCKDOWN = reactive({1-input$REPRODUCTION_RATE_DISCOUNT_LOCKDOWN})
   
   # Bring Economic and Health costs together
   EconCost = reactive({EconCostCalc(PUB_Data = PUB_Data, Tax_Data = Tax_Data, t_Ld = t_Ld()/30, d_CV = d_CV(), CV_SME = CV_SME(), CV_LE = CV_LE(), OEE_FL = OEE_FL(),
@@ -479,7 +479,7 @@ shinyServer(function(input, output, session) {
   
   # Calculate expected utility based on inputs
   FL_ExpUtility = reactive({
-    if(utilityType()=="linear"){
+    if(utilityType()=="neutral"){
       sum(SEU_TotalCostStates()$Prior*linearUtility(EconCost = SEU_TotalCostStates()$EconCostLD, HealthCost = SEU_TotalCostStates()$HealthCostsLD))}
     else{
       sum(SEU_TotalCostStates()$Prior*quadraticUtility(EconCost = SEU_TotalCostStates()$EconCostLD, HealthCost = SEU_TotalCostStates()$HealthCostsLD))
@@ -487,7 +487,7 @@ shinyServer(function(input, output, session) {
   })
   
   PL_ExpUtility = reactive({
-    if(utilityType()=="linear"){
+    if(utilityType()=="neutral"){
       sum(SEU_TotalCostStates()$Prior*linearUtility(EconCost = SEU_TotalCostStates()$EconCostNM, HealthCost = SEU_TotalCostStates()$HealthCostsNM))}
     else{
       sum(SEU_TotalCostStates()$Prior*quadraticUtility(EconCost = SEU_TotalCostStates()$EconCostNM, HealthCost = SEU_TotalCostStates()$HealthCostsNM))

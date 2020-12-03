@@ -24,7 +24,7 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                       sidebarLayout(
                                         # Sidebar-Panel for setting the Parameters
                                         sidebarPanel(p(strong("Change Parameters")),
-                                                     selectInput("utilityType","Type of utility function", choices=c("linear","quadratic"), selected = "linear"),
+                                                     selectInput("utilityType","Risk-profile", choices=c("neutral","averse"), selected = "neutral"),
                                                      p(strong("General factors")),
                                                      flowLayout(sliderInput("costPerYear", "Cost per lost year of lifetime", 25000, 500000, step=5000, value=100000),
                                                      sliderInput("t_Ld", "Lockdown Duration in days", 0, 180, step=1, value=33)),
@@ -36,11 +36,11 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                                      sliderInput("p_pessimistic", "Prior for pessimistic scenario", 0, 1, step=0.001, value=1/3),
                                                      sliderInput("p_neutral", "Prior for neutral scenario", 0, 1, step=0.001, value=1/3)),
                                                      p(strong("Health factors")),
-                                                     flowLayout(sliderInput("INCUBATION_TIME_DAYS", "Incubation time", 1, 10, step=1, value=9),
+                                                     flowLayout(sliderInput("INCUBATION_TIME_DAYS", "Transmission time", 1, 10, step=1, value=9),
                                                      sliderInput("BASIC_REPRODUCTION_NUMBER_LOW", "R0 optimistic", 1, 5, step=0.01, value=1.4),
                                                      sliderInput("BASIC_REPRODUCTION_NUMBER_MEDIUM", "R0 medium", 1, 5, step=0.01, value=2.79),
                                                      sliderInput("BASIC_REPRODUCTION_NUMBER_HIGH", "R0 pessimistic", 1, 5, step=0.01, value=3.3),
-                                                     sliderInput("REPRODUCTION_RATE_DISCOUNT_LOCKDOWN", "R0 discount through Lockdown", 0, 1, step=0.01, value=0.45))
+                                                     sliderInput("REPRODUCTION_RATE_DISCOUNT_LOCKDOWN", "R0 discount through Lockdown", 0, 1, step=0.01, value=0.55))
                                                      ),
                                         
                                         # Main-Panel for the results
