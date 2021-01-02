@@ -52,7 +52,54 @@ Furthermore, only the 33 days following the date of decision will be considered.
 
 
 ## Health Model
+OPEN:
 
+* Quellen angeben (im Text oder im Appendix?)
+
+The health costs are the first cost driver in our model. We have chosen to consider only the costs incurred due to the years of life lost because of corona deaths. For example, one could have also considered the costs of mental illness because of the consequences of a lockdown, but at that point in time the data situation was very scarce. We took six factors into account to calculate the health costs.
+$$L_{tij}^a=(Infected_{t-TrmT}\times R_{0_i}^a)\times FatR_j \times LYrs \times CpLYL$$
+with $a \in$ {Partial Lockdown = PL, Full Lockdown = FL}\
+and $i \in$ {low, medium, high}, $j \in$ {low, medium, high}
+
+$TrmT$: Transmitting Time\
+$CpLYL$: Cost per Year of Life\
+$R_0$: Reproduction Rate\
+$\downarrow R_0$: Lockdown Discount on $R_0$\
+$FatR$: Fatality Rate\
+$LYrs$: Lost Years
+
+### Transmitting Time
+The incubation period of the corona virus showed a large variance across many of the studies available at that time. In addition, we made the assumption that an infected person infects $R_0$ people as soon as symptoms occur, namely after the incubation period. As some people probably do not spread the disease immediately on the first day of the appearance of symptoms, we introduced used in our calculations the transmitting time instead of the incubation period. According to a study of Eurosurveillance the 50th percentile of the incubation period is 6.4 days and the 97.5th percentile is 11.1 days. In order to get the transmitting time we calculated the mean of the percentiles and rounded the result. We arrived at a transmitting time of nine days.
+$$TrmT = \frac{IncP_{50th\text{ }PCTL}+IncP_{97.5th\text{ }PCTL}}{2}\approx 9\text{ days}$$
+
+### Cost per Year of Life
+The cost per year of life express the monetary loss of one year of life lost due to a corona death. We have thus implicitly assumed that the value of life is not infinite. Another assumption we have made is that each year of life has the same value regardless of the age of the dead one. During our research, we came across a Federal Court case where the maximum amount of CHF 100,000 was considered appropriate for a year of life saved.
+$$CpLYL=100'000 \text{ CHF}$$
+
+### Reproduction Rate and Lockdown Discount
+The reproduction rate indicates to how many people an infected person passes on the virus after the transmitting time. Since the data on the reproduction rate was very scarce at the time of the decision on a lockdown, we distinguished between three different scenarios (low, medium, high) in our calculations. We then subtracted the lockdown discount (in percent) from each scenario in the event of a full lockdown. To obtain the values for the different scenarios we used a study from the Journal of Travel Medicine which analysed twelve individual studies from China. For the three scenarios, we took the smallest value, the arithmetic mean and the largest value. For the lockdown discount, we used a study by the World Health Organization. We assumed that all three scenarios have the same probability.
+
+|                        |   low       |   medium    |     high       |
+|:-----------------------|------------:|------------:|---------------:|
+|Partial Lockdown        |   1.4       |   2.79      |     3.3        |
+|Full Lockdown ($-55\%$) |   0.63      |   1.26      |     1.49       |
+
+### Fatality Rate
+The fatality rate indicates the proportion of infected persons who die from the coronavirus. Here, too, the data was very scarce at the time in question. We again distinguished between three scenarios (low, medium, high) for which we assumed the same probability. Since a lockdown does not change the lethality of the virus, we have not distinguished between partial lockdown and full lockdown. We obtained the data for the average mortality rate from China CDC Weekly and Annals of Translational Medicine.
+
+|         |low|medium|high|
+|:-----------------------|------------:|------------:|---------------:|
+|Partial Lockdown        |   0.15%       |   2.3%      |     5.25%        |
+|Full Lockdown |   0.15%       |   2.3%      |     5.25%        |
+
+We then extrapolated the above average mortality rates down to age groups based on an age distribution from China CDC Weekly. We have implicitly assumed that the fatality rates of the individual age groups in Switzerland were the same as in China.
+
+### Lost Years
+To calculate the number of years of life lost by a covid deceased, we used data from the Federal Statistical Office of Switzerland. For each year of life up to 99, the number of years of life still to be expected was listed. Since life expectancy differs between males and females and the distribution of sexes was almost identical before the lockdown decision, we calculated the average life expectancy per age group for our calculations.
+
+|         |0-9|10-19|20-29|30-39|40-49|50-59|60-69|70-79|80+|
+|:----------------|------------:|------------:|---------------:|------------:|------------:|------------:|------------:|------------:|------------:|
+|Life Expectancy     |   77.4   | 67.4  |   57     | 47.1 |37.4   | 28.1  |   19.4     | 11.8 | 5.9
 
 ## Utility Function
 Regarding the utility function it is assumend, that the decision maker's utility only depends on health cost and economic cost. Furthermore it is assumed, that the utility decreases in both. It is also assumed, that the decision maker is risk neutral.
