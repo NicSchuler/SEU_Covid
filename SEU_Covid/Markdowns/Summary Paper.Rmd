@@ -47,7 +47,156 @@ Furthermore, only the 33 days following the date of decision will be considered.
 [^2]: Berger, L. et al. (2020) "Uncertainty and decision-making during a crisis: How to make policy decisions in the COVID-19 context?" *Chicago, Macro Finance Research Program*.
 
 ## Economic Model
+```{r, echo = FALSE, message = FALSE, warning=F}
+# Vorbereitungen: Zuerst müssen die nötigen Packages sowie das Dataset geladen werden.
+rm(list = ls())
 
+library(AER)
+library(sandwich)
+library(lmtest)
+library(MASS)
+library(tidyverse)
+library(data.table)
+library(moments)
+library(stargazer)
+library(dmm)
+library(DataCombine)
+```
+
+### General Approach & Basic Assumptions
+
+We defined economic costs as the second cost driver in our model. The term *economic costs* is rather vague, and there are different aspects one could take into account. We decided to define economic costs in our model as lockdown-related government spending, consisting of five different cost categories. The economic cost function and the corresponding cost categories are illustrated below.
+
+
+$$G^a_i=PUB^a_i+DC^a_i+TaxP^a_i+TaxVA^a_i+OEE^a_i$$
+
+- $a \in$ {Partial Lockdown = PL, Full Lockdown = FL}
+- $i \in$ {optimistic = o, neutral = n, pessimistic = p}
+- $G^a_i$ = Additional government spending in act a and state i
+- $PUB^a_i$ = Partial unemployment benefits
+- $DC^a_i$ = Defaults of granted credits
+- $TaxP^a_i$ = Corporate profit tax shortfalls
+- $TaxVA^a_i$ = Value added tax shortfalls
+- $OEE^a_i$ = Other extraordinary expenses
+
+Our economic cost function is inspired by similar analysis from [NZZ](https://www.nzz.ch/wirtschaft/der-bundesrat-will-die-wirtschaft-mit-so-vielen-milliarden-stuetzen-wie-es-braucht-ld.1547712) and [Avenir Suisse](https://www.avenir-suisse.ch/publication/wirtschaftspolitische-antworten-auf-corona-krise/). We argue that the focus on government spending captures essential economic costs the Swiss people care about because they have to finance it through taxes. Furthermore, we argue that it is a good measurement of economic damage caused by the lockdown decision because it directly and indirectly takes into account some of the decision’s effects on the labor market and the domestic economy. Consequently, we believe that our model, at least to some extent, factors in the economic costs the Federal council considered for its lockdown decision. Besides that, this approach appeared reasonable in terms of data availability. Firstly, it allowed us to respect the particularity of the Swiss case since we could rely on data about the Swiss economy. Secondly, it enabled us to reasonably and transparently differ between the costs in a full and a partial lockdown which was another difficult challenge to tackle. Nevertheless, it is important to state that our approach represents a strong simplification of the actual economic costs since it ignores many other important cost categories such as long-term unemployment. 
+
+### Economic Shock Exposure Variable
+As already mentioned above, one of the main challenges in our approach was the differentiation between the costs in the two acts. This was a particular problem for cost categories which differed across the sectors in the economy, namely the partial unemployment benefits and the two tax categories. We decided to tackle this problem by introducing a so-called _Economic Shock Exposure Variable_ $X^a_{s,i}$. This variable measures two things at the same time. Firstly, it indicates how much percent of sector $s$' current wage bill will be subject to partial unemployment benefits in act $a$ and state $i$ and secondly it indicates by how much percent a sector’s usual tax payments will be reduced in act $a$ and state $i$. As a further simplification, we assumed that the act exercised by the Federal Council would only affect the economic shock exposure of six particular sectors. This enabled us to ignore all other sectors of the Swiss economy in our model since the lockdown-decision would not cause any additional government spending related to these sectors. We then assumed that the Federal Council knew the precise shock exposure of these six sectors in case of a full lockdown whereas it was unsure about the shock exposure in case of a partial lockdown. As a consequence, the Federal Council faced uncertainty about the difference of lockdown-related government spending in the two acts.
+
+The introduction of the economic shock exposure variable was inspired by an [analysis of Avenir Suisse](https://www.avenir-suisse.ch/publication/wirtschaftspolitische-antworten-auf-corona-krise/) which followed a similar approach. The overview below shows the shock exposure of the six considered sectors. For the  _full lockdown_ act we adopted the economic shock exposure suggested in the paper of Avenir Suisse. In case of the retail trade sector the paper did not mention the concrete value it used but indicated that it assumed a full shock exposure of 100% except for the food retail trade which was presumed to be unaffected by the lockdown decision. We did not find any data concerning the composition of the retail trade’s earnings, but we found that the [Unia](https://www.unia.ch/fileadmin/user_upload/Arbeitswelt-A-Z/Detailhandel/Detailhandel-Broschuere-Branche-Detailhandel.pdf) assumed in 2012 that the food retail trade accounted for 37% of all employment in the retail trade sectors. We used this information and consequently assumed that the retail sector would experience a shock exposure of only 63%. This represents a strong simplification, but it allowed us to at least estimate the ambivalent effects in the retail trade sectors.
+
+```{r echo=F, message=FALSE, warning=FALSE, paged.print=FALSE, results = "asis"}
+# Regressiere insured auf good_health
+load("../Data/Kurzarbeit.RData")
+ShockExposure=Kurzarbeit%>%
+  select(Exposure_Ld:Exposure_NoLd_S3)
+ShockExposure=ShockExposure%>%
+  add_column(Kurzarbeit$Wirtschaftsabteilung, .before = 1)%>%
+  filter(Exposure_NoLd_S1!=0 & ShockExposure$Exposure_NoLd_S1!=1)
+ShockExposure=data.frame(ShockExposure[,-2], ShockExposure$Exposure_Ld)
+names(ShockExposure)=c("Sector", "a=PL i=o", "a=PL i=n", "a=PL i=p", "a=FL i={o,n,p}")
+ShockExposure[1,1]="Handel, Inst. u. Rep. v. Mfz"
+ShockExposure[6,1]="Erbringung sonstiger DL"
+
+stargazer(ShockExposure, digits = 3, summary=F, header=F, title = "Economic Shock Exposure per Sector, State and Act")
+```
+
+Due to the uncertainty assumption, the shock exposure variable required more than one value as input for the act of a partial lockdown. The paper of Avenir Suisse did not suggest any values for the economic shock exposure in case of a partial lockdown but it assumed that the other sectors in the economy (i.e. the sectors we ignored in our model) would all be subject to a shock exposure of 20% in case of a full lockdown. We decided to take this 20% shock exposure and define it as the minimum shock exposure of the six considered sectors in case of a partial lockdown in order to remain consistent within our model. We already assumed that the shock exposure of the ignored sectors would be the same in both acts. Since the partial lockdown measures discriminated considerably less across the sectors in the economy, it seemed consistent to assume that the shock exposure of our six considered sectors would also equal 20% in a partial lockdown. As a next step we had to define a maximum value of the shock exposure, representing a pessimistic state of the economic shock in the event of a partial lockdown. We assumed that the values of the shock exposure in this state would equal the values in case of a full lockdown. As a final and neutral scenario, we then decided to take the average of the shock exposure in the optimistic and pessimistic state of each sector. The uncertainty about the economic shock exposure in a partial lockdown required us to assign a prior to each value. Due to the lack of further information we decided to rely on the principle of insufficient reason from De Finetti (1981)[^3] and assumed equal prior probabilities for each economic state.
+
+[^3]: Bruno De Finetti (1981) "Wahrscheinlichkeitstheorie" *München, Oldenburg Verlag GmbH*.
+
+Overall, the introduction of the economic shock exposure variable allowed us to differentiate between the economic costs in the two acts in a consistent way. However, it also required us to establish several assumptions which are debatable and base on a relatively thin academic proof since we mainly rely on the analysis of a domestic think-thank. It is an important point of criticism in our model and should be subject to improvements in further research.
+
+
+[^3]: Bruno De Finetti (1981) "Wahrscheinlichkeitstheorie" *München, Oldenburg Verlag GmbH*.
+
+### Cost Categories
+This subchapter gives an overview of the calculations of the five cost categories and indicates the data sources we relied on.
+
+#### Partial Unemployment Benefits
+$$PUB= \sum_{s=1}^{n}{L_s\ast}{\emptyset w}_s\ast X_{s,i}^{a}\ast0.8$$
+
+-	$n$ = Number of sectors whoose economic shock depends on the act
+-	$L_s$ = Number of workers in sector $s$ (indicated as full-time equivalents)
+-	${\emptyset w}_s$ = Average monthly wage in sector $s$
+-	$t$ = Duration of lockdown = 33 days = 1.1 months
+-	$X_{s,i}^{a}$ = Economic shock exposure of sector $s$ in state $i$ in the event of act $a$
+
+The calculation of the partial unemployment benefits is largely self-explanatory. In case of a partial lockdown, there are three different possible cost outcomes due to the uncertainty represented by the economic shock exposure variable. The data about the [wage level](https://www.bfs.admin.ch/bfs/de/home/statistiken/arbeit-erwerb/loehne-erwerbseinkommen-arbeitskosten/lohnniveau-schweiz.assetdetail.12488252.html) and the [full-time equivalents](https://www.bfs.admin.ch/bfs/de/home/statistiken/industrie-dienstleistungen/unternehmen-beschaeftigte/beschaeftigungsstatistik.assetdetail.14879359.html) per sector are both provided by the Federal Statistical Office of Switzerland.
+
+#### Defaulted Credits
+\[
+    DC= 
+\begin{cases}
+    d\ast{CV}^{SME}+d*c*{CV}^{LE},& \text{if } a=FL\\
+    0,              & \text{if } a=PL
+\end{cases}
+\]
+
+-	$d$ = 0.05 = default rate of the credit facilities
+- $c$ = 0.85 = Share of the credit facility for large enterprises which is covered by a guarantee of the Swiss Government
+-	${\rm CV}^{SME}$= Credit volume for small and medium enterprises
+-	${\rm CV}^{LE}$ = Credit volume for large enterprises
+
+
+This cost category refers to the two credit facilities the Swiss government decided to guarantee after the lockdown-decision. The key points of the credit facilities can be found in the associated [media release](https://www.seco.admin.ch/seco/de/home/seco/nsb-news/medienmitteilungen-2020.msg-id-78515.html) of the Swiss government. We assumed that the Federal Council already knew that it would take this measure when it announced the full lockdown on March 16. We then estimated that 5% of these credits would default in case of a full lockdown which is in line with estimations of financial experts according to a report from the [NZZ](https://www.nzz.ch/wirtschaft/die-notkredite-fuer-kmu-stehen-bereit-ld.1548575). As one can see in the equation below, we assumed that the costs resulting from defaulted credits would equal to zero in case of a partial lockdown. This reflects our assumption that either the default rate of these credits would be zero or that the Federal Council would not have had to guarantee loans in the first place in case of a partial lockdown. It is also important to state that we ignored potential interest rate incomes of the credit facility for large enterprises.
+
+#### Corporate Profit Tax Shortfalls
+
+$$TaxP= \frac{\sum_{s=1}^{n}{\Pi_s^{2018}\ast}*q^{P}*X_{s,i}^{a}\ast}{12}*t$$
+
+-	$\pi_s^{2018}$ = Profits exposed to taxes in sector s in 2018
+-	$q^P$ = 8.5% = Federal tax ratio in Switzerland for corporate profits 
+- $X_{s,i}^{a}$ = Economic Shock Exposure of sector $s$ in the event of act $a$
+
+The calculation of the corporate profit tax shortfalls is largely self-explanatory. In the event of a partial lockdown, there are again three different possible cost outcomes due to the uncertainty represented by the economic shock exposure variable. Furthermore, it is important to state that we assumed that the profits exposed to taxes in the six sectors would be at the same level as in 2018 which was the latest year with available data. We also assumed that these profits would be equally distributed over all the days of a year. Both of these assumptions are debatable since profits vary with the season and also over the years, but they helped to simplify our model. The data about the [earnings](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken.assetdetail.12567123.html) and the [costs](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken.assetdetail.12567116.html) per sector are both provided by the Federal Statistical Office of Switzerland.
+
+#### Value Added Tax Shortfalls
+$$Tax= \frac{\sum_{s=1}^{n}VA^{2018}_s*q^{VA}_s*X_{s,i}^{a}\ast}{12}*t$$
+
+-	${VA}_s^{2018}$ = Value added exposed to taxes in sector $s$ in 2018
+-	$q_s^{VA}$ = Tax ratio in Switzerland on value added in sector $s$
+- $X_{s,i}^{a}$ = Economic Shock Exposure of sector $s$ in the event of act $a$
+
+The calculation of the value added tax shortfalls is conceptionally identical to the one of corporate profit tax shortfalls and does therefore not require further explanations. The data used to calculate the value added per sector is also the same as the one used to calculate the profit taxes.
+
+#### Other Extraordinary Expenses
+\[
+    OEE= 
+\begin{cases}
+    4'000'000'000,& \text{if } a=FL\\
+    0,              & \text{if } a=PL
+\end{cases}
+\]
+
+This cost category incorporates two different types of lockdown-related government spending. First, it includes compensations for self-employed people whose business has been closed in the course of a full lockdown or who could not work due to quarantine. Secondly, it refers to compensations for parents who could not work due the closing of the schools. The estimations for both cost types base on an [article from NZZ](https://www.nzz.ch/wirtschaft/der-bundesrat-will-die-wirtschaft-mit-so-vielen-milliarden-stuetzen-wie-es-braucht-ld.1547712). This cost category does not include subsidies for cultural or sport organization because we assumed that they would have been closed in both acts. Moreover, the equation displayed below indicates that we supposed the other extraordinary expenses to be zero in case of a partial lockdown. This seems reasonable since both types of lockdown-related government spending explained above are directly linked with the measures of a full lockdown. 
+
+### Results
+The graph below indicates the economic costs for all three economic states. Every economic state has two different outcomes since our model has two different acts. We see that the lockdown-related government spending equals approximately 9 billions in the event of a full lockdown whereas these spendings vary between 1.0-3.2 billions in the event of a partial lockdown, depending on the value of the economic shock exposure. We recognize that the additional spending in a full lockdown is mainly caused by other extraordinary expenses and defaulted credits. The other three cost categories, which were subject to stronger assumptions, account for a considerably smaller proportion, especially the tax-related cost categories which almost seem negligible in comparison to the others. The main variance of the payoffs in a partial lockdown comes from the partial unemployment benefits.
+
+
+
+```{r echo=F, message=FALSE, warning=FALSE, paged.print=FALSE, results = "asis"}
+# Regressiere insured auf good_health
+load("../Data/CompositionEconCostsTable.RData")
+CompositionEconCosts[,-1]=round(CompositionEconCosts[-1],0)
+CompositionEconCosts$Scenario=as.character(CompositionEconCosts$Scenario)
+CompositionEconCosts=CompositionEconCosts%>%
+  mutate(`Additonal Government Spending Partial Lockdown`=rowSums(.[2:6]))
+
+ActState=as.data.frame(str_split(CompositionEconCosts$Scenario,pattern = ":", simplify = T))
+names(ActState)=c("Act", "State")
+CompositionEconCosts=data.frame(ActState,CompositionEconCosts[,-1])
+CompositionEconCosts=InsertRow(CompositionEconCosts, CompositionEconCosts[1,], RowNum = 3)
+CompositionEconCosts=InsertRow(CompositionEconCosts, CompositionEconCosts[1,], RowNum = 5)
+CompositionEconCosts$State=c("Optimistic", NA, "Neutral", NA, "Pessimistic", NA)
+CompositionEconCosts=data.frame(CompositionEconCosts$State, CompositionEconCosts[,-which(colnames(CompositionEconCosts)=="State")])
+CompositionEconCosts=add_column(CompositionEconCosts, Prior=round(rep(c(1/3, NA),3),3), .before = "Act")
+names(CompositionEconCosts)=c("State", "Prior", "Act", "PUB", "DC", "TaxP", "TaxVA", "OEE", "AddGovSpend")
+
+stargazer(CompositionEconCosts, digit.separator = "'", summary=F, header=F, title = "Composition of Economic Costs per State and Act (in Mio)")
+```
 
 ## Health Model
 The health costs are the first cost driver in our model. We chose to consider only the costs incurred due to the years of life lost because of corona deaths. For example, one could have also considered the costs of mental illness because of the consequences of a full lockdown. Still, the data situation was scarce when the decision had to be made to declare a full lockdown or keep a partial lockdown. We took six factors into account to calculate the health costs.
