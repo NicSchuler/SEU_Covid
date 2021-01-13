@@ -16,7 +16,7 @@ urlcolor: blue
 \vspace{12pt}
 
 ># Abstract {-}
-> Far-reaching measures were decided by the Swiss federal council to counter the Covid-19 pandemic. This paper analyses this decision using separate models of the health and economic impact with the Subjective Expected Utility Theory (SEU). Based on different assumptions regarding the impact of the pandemic, a partial lockdown would have been suggested. In order to assess the uncertainty about the specifications, a [shiny application](https://nschuler.shinyapps.io/SEU_Covid_V4/) has been set up. Despite considering different aspects, different types of uncertainty remain and therefore make it unpossible to give a clear suggestion.
+> Far-reaching measures were decided by the Swiss federal council to counter the Covid-19 pandemic. This paper analyses this decision using separate models of the health and economic impact with the Subjective Expected Utility Theory (SEU). Based on different assumptions regarding the impact of the pandemic, a partial lockdown would have been suggested. In order to assess the uncertainty about the specifications, a [shiny application](https://nschuler.shinyapps.io/SEU_Covid_V4/) has been set up. Despite considering different aspects, different types of uncertainty remain and therefore make it impossible to give a clear suggestion.
 
 \newpage
 
@@ -72,7 +72,7 @@ library(DataCombine)
 
 ### General Approach & Basic Assumptions
 
-We defined economic costs as the second cost driver in our model. The term *economic costs* is rather vague, and there are different aspects one could take into account. We decided to define economic costs in our model as lockdown-related government spending, consisting of five different cost categories. The economic cost function and the corresponding cost categories are illustrated below.
+We defined economic costs as the first cost driver in our model. The term *economic costs* is rather vague, and there are different aspects one could take into account. We decided to define economic costs in our model as lockdown-related government spending, consisting of five different cost categories. The economic cost function and the corresponding cost categories are illustrated below.
 
 
 $$G^a_i=PUB^a_i+DC^a_i+TaxP^a_i+TaxVA^a_i+OEE^a_i$$
@@ -123,13 +123,13 @@ This subchapter gives an overview of the calculations of the five cost categorie
 
 **Partial Unemployment Benefits**
 
-$$PUB= \sum_{s=1}^{n}{L_s\ast}{\emptyset w}_s\ast X_{s,i}^{a}\ast0.8$$
+$$PUB= \sum_{s=1}^{n}{L_s\ast}{\emptyset w}_s\ast X_{s,i}^{a}\ast0.8*t$$
 
 -	$n$ = Number of sectors whoose economic shock depends on the act
 -	$L_s$ = Number of workers in sector $s$ (indicated as full-time equivalents)
 -	${\emptyset w}_s$ = Average monthly wage in sector $s$
--	$t$ = Duration of lockdown = 33 days = 1.1 months
 -	$X_{s,i}^{a}$ = Economic shock exposure of sector $s$ in state $i$ in the event of act $a$
+-	$t$ = Duration of lockdown = 33 days = 1.1 months
 
 The calculation of the partial unemployment benefits is largely self-explanatory. In case of a partial lockdown, there are three different possible cost outcomes due to the uncertainty represented by the economic shock exposure variable. The data about the [wage level](https://www.bfs.admin.ch/bfs/de/home/statistiken/arbeit-erwerb/loehne-erwerbseinkommen-arbeitskosten/lohnniveau-schweiz.assetdetail.12488252.html) and the [full-time equivalents](https://www.bfs.admin.ch/bfs/de/home/statistiken/industrie-dienstleistungen/unternehmen-beschaeftigte/beschaeftigungsstatistik.assetdetail.14879359.html) per sector are both provided by the Federal Statistical Office of Switzerland.
 
@@ -188,7 +188,7 @@ This cost category incorporates two different types of lockdown-related governme
 \newpage
 
 ### Results
-The graph below indicates the economic costs for all three economic states. Every economic state has two different outcomes since our model has two different acts. We see that the lockdown-related government spending equals approximately 9 billions in the event of a full lockdown whereas these spendings vary between 1.0-3.2 billions in the event of a partial lockdown, depending on the value of the economic shock exposure. We recognize that the additional spending in a full lockdown is mainly caused by other extraordinary expenses and defaulted credits. The other three cost categories, which were subject to stronger assumptions, account for a considerably smaller proportion, especially the tax-related cost categories which almost seem negligible in comparison to the others. The main variance of the payoffs in a partial lockdown comes from the partial unemployment benefits.
+The graph below indicates the economic costs for all three economic states. Every economic state has two different outcomes since our model has two different acts. We see that the lockdown-related government spending equals approximately 9 billions in the event of a full lockdown whereas these spendings vary between 1.0-3.2 billions in the event of a partial lockdown, depending on the value of the economic shock exposure. We recognize that the additional spending in a full lockdown is mainly caused by other extraordinary expenses and defaulted credits. Consequently, the assumption that both of these cost categories would equal zero in the event of a partial lockdown had a significant impact on the economic prediction of our model. The other three cost categories account for a considerably smaller proportion, especially the tax-related cost categories which almost seem negligible in comparison to the others. The main variance of the payoffs in a partial lockdown comes from the partial unemployment benefits.
 
 
 
@@ -214,7 +214,7 @@ stargazer(CompositionEconCosts, digit.separator = "'", summary=F, header=F, titl
 ```
 
 ## Health Model
-The health costs are the first cost driver in our model. We chose to consider only the costs incurred due to the years of life lost because of corona deaths. For example, one could have also considered the costs of mental illness because of the consequences of a full lockdown. Still, the data situation was scarce when the decision had to be made to declare a full lockdown or keep a partial lockdown. We took six factors into account to calculate the health costs.
+The health costs are the second cost driver in our model. We chose to consider only the costs incurred due to the years of life lost because of corona deaths. For example, one could have also considered the costs of mental illness because of the consequences of a full lockdown. Still, the data situation was scarce when the decision had to be made to declare a full lockdown or keep a partial lockdown. We took six factors into account to calculate the health costs.
 $$L_{tij}^a=(Infected_{t-TrmT}\times R_{0_i}^a)\times FatR_j \times LYrs \times CpLYL$$
 with $a \in$ {Partial Lockdown = PL, Full Lockdown = FL}\
 and $i \in$ {low, medium, high}, $j \in$ {low, medium, high}
@@ -261,24 +261,26 @@ To calculate the number of years of life lost by a covid deceased, we used data 
 |Life Expectancy     |   77.4   | 67.4  |   57     | 47.1 |37.4   | 28.1  |   19.4     | 11.8 | 5.9
 
 ## Utility Function
-Regarding the utility function it is assumend, that the decision maker's utility only depends on health cost and economic cost. Furthermore it is assumed, that the utility decreases in both. It is also assumed, that the decision maker is risk neutral.
+Regarding the utility function it is assumend that the decision maker's utility only depends on health cost and economic cost. Furthermore it is assumed, that the utility decreases in both. It is also assumed, that the decision maker is risk neutral.
 
 A straightforward representation of these preferences is the following:
 $$u_{neutral}(EconCost, HealthCost)= -\frac{EconCost+HealthCost}{10^9}$$
 Beside its simplicity, its interpretability is also an advantage. The resulting value can be perceived as monetary loss equivalent of health and economic cost (in Bn CHF). Note: its values are likely to be negative.
 
 # Results and Discussion
-The economic and the health model are combined as such that every state consists of a certain reproduction rate $R_0$, fatatality rate $FatR$ and an economic expectation. This leads to $3^3 = 27$ states, which, based on de Finetti's principle of insufficient reason, are all assigned with a probability of 1/27. Based on all mentioned assumptions, following subjective expected utilities are obtained for the two acts:
+The economic and the health model are combined as such that every state consists of a certain reproduction rate $R_0$, fatatality rate $FatR$ and an economic expectation expressed by the economic shock exposure variable $X_{s,i}^{a}$. This leads to $3^3 = 27$ states, which, based on de Finetti's principle of insufficient reason, are all assigned with a probability of 1/27. Based on all mentioned assumptions, following subjective expected utilities are obtained for the two acts:
 
 |partial lockdown|full lockdown|
 |---------------:|------------:|
 |   **-8.587**   |   -9.648    |
 
-When following Savage's approach with the SEU, based on the mentioned assumptions, the Swiss federal council should have decided a partial lockdown. But as the values already suggest, the assumptions made lead to a very close decision.
+When following Savage's approach with the SEU, based on the mentioned assumptions, the Swiss federal council should have decided a partial lockdown. But as the values already suggest, the assumptions lead to a very close decision.
+
+\newpage
 
 In order to assess the model's sensitivity to critical input parameters easily, our results are deployed in this [shiny application](https://nschuler.shinyapps.io/SEU_Covid_V4/). As can be seen in the following table, different ceteris paribus changes in the assumptions, which might also have been plausible in March 2020, change the suggested decision:
 
-\newpage
+
 
 |Variable         |assumed value|changed value|partial lockdown|full lockdown|
 |:----------------|------------:|------------:|---------------:|------------:|
