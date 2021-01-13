@@ -6,12 +6,19 @@ date: "January 15th, 2020"
 output: 
   pdf_document:
     number_sections: true
+    toc: true
+    toc_depth: 3
 
 fontsize: 11pt
 urlcolor: blue
     
 ---
+\vspace{12pt}
+
+># Abstract {-}
 > Far-reaching measures were decided by the Swiss federal council to counter the Covid-19 pandemic. This paper analyses this decision using separate models of the health and economic impact with the Subjective Expected Utility Theory (SEU). Based on different assumptions regarding the impact of the pandemic, a partial lockdown would have been suggested. In order to assess the uncertainty about the specifications, a [shiny application](https://nschuler.shinyapps.io/SEU_Covid_V4/) has been set up. Despite considering different aspects, different types of uncertainty remain and therefore make it unpossible to give a clear suggestion.
+
+\newpage
 
 # Motivation
 Due to the Covid-19 pandemic, the Swiss federal council made a decision on March 16th, 2020 with a massive impact on society, economy and healthcare. Shops, schools, theaters, museums, restaurants, bars, libraries and many more institutions were closed, large events with more than 100 people were forbidden and the Swiss armed forces were mobilized for the first time since world war two (cf [press conference](https://www.youtube.com/watch?v=fnuTzODXLvw)).
@@ -106,15 +113,16 @@ Due to the uncertainty assumption, the shock exposure variable required more tha
 
 [^3]: Bruno De Finetti (1981) "Wahrscheinlichkeitstheorie" *München, Oldenburg Verlag GmbH*.
 
+\newpage
+
 Overall, the introduction of the economic shock exposure variable allowed us to differentiate between the economic costs in the two acts in a consistent way. However, it also required us to establish several assumptions which are debatable and base on a relatively thin academic proof since we mainly rely on the analysis of a domestic think-thank. It is an important point of criticism in our model and should be subject to improvements in further research.
 
-
-[^3]: Bruno De Finetti (1981) "Wahrscheinlichkeitstheorie" *München, Oldenburg Verlag GmbH*.
 
 ### Cost Categories
 This subchapter gives an overview of the calculations of the five cost categories and indicates the data sources we relied on.
 
-#### Partial Unemployment Benefits
+**Partial Unemployment Benefits**
+
 $$PUB= \sum_{s=1}^{n}{L_s\ast}{\emptyset w}_s\ast X_{s,i}^{a}\ast0.8$$
 
 -	$n$ = Number of sectors whoose economic shock depends on the act
@@ -125,7 +133,8 @@ $$PUB= \sum_{s=1}^{n}{L_s\ast}{\emptyset w}_s\ast X_{s,i}^{a}\ast0.8$$
 
 The calculation of the partial unemployment benefits is largely self-explanatory. In case of a partial lockdown, there are three different possible cost outcomes due to the uncertainty represented by the economic shock exposure variable. The data about the [wage level](https://www.bfs.admin.ch/bfs/de/home/statistiken/arbeit-erwerb/loehne-erwerbseinkommen-arbeitskosten/lohnniveau-schweiz.assetdetail.12488252.html) and the [full-time equivalents](https://www.bfs.admin.ch/bfs/de/home/statistiken/industrie-dienstleistungen/unternehmen-beschaeftigte/beschaeftigungsstatistik.assetdetail.14879359.html) per sector are both provided by the Federal Statistical Office of Switzerland.
 
-#### Defaulted Credits
+**Defaulted Credits**
+
 \[
     DC= 
 \begin{cases}
@@ -142,7 +151,9 @@ The calculation of the partial unemployment benefits is largely self-explanatory
 
 This cost category refers to the two credit facilities the Swiss government decided to guarantee after the lockdown-decision. The key points of the credit facilities can be found in the associated [media release](https://www.seco.admin.ch/seco/de/home/seco/nsb-news/medienmitteilungen-2020.msg-id-78515.html) of the Swiss government. We assumed that the Federal Council already knew that it would take this measure when it announced the full lockdown on March 16. We then estimated that 5% of these credits would default in case of a full lockdown which is in line with estimations of financial experts according to a report from the [NZZ](https://www.nzz.ch/wirtschaft/die-notkredite-fuer-kmu-stehen-bereit-ld.1548575). As one can see in the equation below, we assumed that the costs resulting from defaulted credits would equal to zero in case of a partial lockdown. This reflects our assumption that either the default rate of these credits would be zero or that the Federal Council would not have had to guarantee loans in the first place in case of a partial lockdown. It is also important to state that we ignored potential interest rate incomes of the credit facility for large enterprises.
 
-#### Corporate Profit Tax Shortfalls
+\newpage
+
+**Corporate Profit Tax Shortfalls**
 
 $$TaxP= \frac{\sum_{s=1}^{n}{\Pi_s^{2018}\ast}*q^{P}*X_{s,i}^{a}\ast}{12}*t$$
 
@@ -152,7 +163,8 @@ $$TaxP= \frac{\sum_{s=1}^{n}{\Pi_s^{2018}\ast}*q^{P}*X_{s,i}^{a}\ast}{12}*t$$
 
 The calculation of the corporate profit tax shortfalls is largely self-explanatory. In the event of a partial lockdown, there are again three different possible cost outcomes due to the uncertainty represented by the economic shock exposure variable. Furthermore, it is important to state that we assumed that the profits exposed to taxes in the six sectors would be at the same level as in 2018 which was the latest year with available data. We also assumed that these profits would be equally distributed over all the days of a year. Both of these assumptions are debatable since profits vary with the season and also over the years, but they helped to simplify our model. The data about the [earnings](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken.assetdetail.12567123.html) and the [costs](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken.assetdetail.12567116.html) per sector are both provided by the Federal Statistical Office of Switzerland.
 
-#### Value Added Tax Shortfalls
+**Value Added Tax Shortfalls**
+
 $$Tax= \frac{\sum_{s=1}^{n}VA^{2018}_s*q^{VA}_s*X_{s,i}^{a}\ast}{12}*t$$
 
 -	${VA}_s^{2018}$ = Value added exposed to taxes in sector $s$ in 2018
@@ -161,7 +173,8 @@ $$Tax= \frac{\sum_{s=1}^{n}VA^{2018}_s*q^{VA}_s*X_{s,i}^{a}\ast}{12}*t$$
 
 The calculation of the value added tax shortfalls is conceptionally identical to the one of corporate profit tax shortfalls and does therefore not require further explanations. The data used to calculate the value added per sector is also the same as the one used to calculate the profit taxes.
 
-#### Other Extraordinary Expenses
+**Other Extraordinary Expenses**
+
 \[
     OEE= 
 \begin{cases}
@@ -171,6 +184,8 @@ The calculation of the value added tax shortfalls is conceptionally identical to
 \]
 
 This cost category incorporates two different types of lockdown-related government spending. First, it includes compensations for self-employed people whose business has been closed in the course of a full lockdown or who could not work due to quarantine. Secondly, it refers to compensations for parents who could not work due the closing of the schools. The estimations for both cost types base on an [article from NZZ](https://www.nzz.ch/wirtschaft/der-bundesrat-will-die-wirtschaft-mit-so-vielen-milliarden-stuetzen-wie-es-braucht-ld.1547712). This cost category does not include subsidies for cultural or sport organization because we assumed that they would have been closed in both acts. Moreover, the equation displayed below indicates that we supposed the other extraordinary expenses to be zero in case of a partial lockdown. This seems reasonable since both types of lockdown-related government spending explained above are directly linked with the measures of a full lockdown. 
+
+\newpage
 
 ### Results
 The graph below indicates the economic costs for all three economic states. Every economic state has two different outcomes since our model has two different acts. We see that the lockdown-related government spending equals approximately 9 billions in the event of a full lockdown whereas these spendings vary between 1.0-3.2 billions in the event of a partial lockdown, depending on the value of the economic shock exposure. We recognize that the additional spending in a full lockdown is mainly caused by other extraordinary expenses and defaulted credits. The other three cost categories, which were subject to stronger assumptions, account for a considerably smaller proportion, especially the tax-related cost categories which almost seem negligible in comparison to the others. The main variance of the payoffs in a partial lockdown comes from the partial unemployment benefits.
@@ -227,7 +242,7 @@ The reproduction rate indicates how many people an infected person passes on the
 |Partial Lockdown        |   1.4       |   2.79      |     3.3        |
 |Full Lockdown ($-55\%$) |   0.63      |   1.26      |     1.49       |
 
-\pagebreak
+
 ### Fatality Rate
 The fatality rate indicates the proportion of infected persons who die from the coronavirus. Here, too, the data was very scarce at the time in question. We again distinguished between three scenarios (low, medium, high) for which we assumed the same probability. Since a lockdown does not change the virus's lethality, we have not distinguished between a partial lockdown and full lockdown. We obtained the data for the average mortality rate from [China CDC Weekly](https://globalhandwashing.org/wp-content/uploads/2020/03/COVID-19.pdf) and [Annals of Translational Medicine](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7049028/).
 
@@ -253,7 +268,7 @@ $$u_{neutral}(EconCost, HealthCost)= -\frac{EconCost+HealthCost}{10^9}$$
 Beside its simplicity, its interpretability is also an advantage. The resulting value can be perceived as monetary loss equivalent of health and economic cost (in Bn CHF). Note: its values are likely to be negative.
 
 # Results and Discussion
-Based on all mentioned assumptions, following subjective expected utilities are obtained for the two acts:
+The economic and the health model are combined as such that every state consists of a certain reproduction rate $R_0$, fatatality rate $FatR$ and an economic expectation. This leads to $3^3 = 27$ states, which, based on de Finetti's principle of insufficient reason, are all assigned with a probability of 1/27. Based on all mentioned assumptions, following subjective expected utilities are obtained for the two acts:
 
 |partial lockdown|full lockdown|
 |---------------:|------------:|
@@ -263,21 +278,23 @@ When following Savage's approach with the SEU, based on the mentioned assumption
 
 In order to assess the model's sensitivity to critical input parameters easily, our results are deployed in this [shiny application](https://nschuler.shinyapps.io/SEU_Covid_V4/). As can be seen in the following table, different ceteris paribus changes in the assumptions, which might also have been plausible in March 2020, change the suggested decision:
 
+\newpage
+
 |Variable         |assumed value|changed value|partial lockdown|full lockdown|
 |:----------------|------------:|------------:|---------------:|------------:|
-|Risk-profile     |   neutral   | averse[^3]  |   -135.122     | **-93.537** |
+|Risk-profile     |   neutral   | averse[^4]  |   -135.122     | **-93.537** |
 |Cost LYOL        |   100'000   |   120'000   |     -9.876     |  **-9.768** |
 |Ld duration      |        33   |        35   |    -11.032     |  **-9.937** |
 |Credit default   |         5%  |       1.8%  |     -8.587     |  **-8.390** |
 |Transmission Time|         9   |         8   |    -12.164     |  **-9.775** |
 |$R_0$ pessimistic|       3.3   |       3.6   |     -9.943     |  **-9.739** |
 
-[^3]: For the risk-averse profile, following utility function was assumed:
+[^4]: For the risk-averse profile, following utility function was assumed:
 $u_{averse}(EC, HC)= -(\frac{EconCost+HealthCost}{10^9})^2$
 
-Berger et al. (2020)[^4] describe three types of uncertainty, which are relevant for models in the context of the Covid-19 crisis.
+Berger et al. (2020)[^5] describe three types of uncertainty, which are relevant for models in the context of the Covid-19 crisis.
 
-[^4]: Berger, L. et al. (2020) "Uncertainty and decision-making during a crisis: How to make policy decisions in the COVID-19 context?" *Chicago, Macro Finance Research Program*.
+[^5]: Berger, L. et al. (2020) "Uncertainty and decision-making during a crisis: How to make policy decisions in the COVID-19 context?" *Chicago, Macro Finance Research Program*.
 
 First, uncertainty within the model, referring to the standard notion of risk, meaning the uncertainty of outcomes with prespecified probabilities. In our case, this uncertainty goes even beyond this, since the probabilities of the occurence of the states is unknown and, based on de Finetti's principle of unsufficient reason, is assumed to be equal for all states.
 
@@ -286,13 +303,4 @@ Second, uncertainty across models, which reflects the uncertainty about paramete
 Third, uncertainty about models, referring to the property of a model, that it is a simplification of a more complex phenomenon and therefore is misspecified to some extent. Although our models reflect many aspects of the impact of the Covid-19 crisis, there are certainly some issues missing. Neither the impact on mental health, nor the capacities of the health care system were explicitly specified in the models, leading to a bias.
 
 Due to many remaining uncertainties regarding the models, it is not possible to come to very clear result based on these models.
-
-
-# Appendix
-
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
