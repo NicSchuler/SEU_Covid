@@ -37,7 +37,7 @@ Following components must be defined to apply SEU for our purpose:
 * Utility function $u(x_{ia})$: the utility function for every consequence, complying with the SEU-postulates.
 
 Based on the SEU, a decision maker should choose the act $a$, which has the highest expected utility of all acts $a\in A$. In mathematical notation, the decision criteria can be represented as:
-$$\max_a \sum_{\forall i} x_{ia}*\tilde{p}_i$$
+$$\max_a \sum_{\forall i} u(x_{ia})*\tilde{p}_i$$
 
 [^1]: Savage, L.J. (1954) “The Foundations of Statistics” *New York, Wiley*.
 
