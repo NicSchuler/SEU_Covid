@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.12) (preloaded format=pdflatex 2021.1.5)  14 JAN 2021 08:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.12) (preloaded format=pdflatex 2021.1.5)  14 JAN 2021 11:21
 entering extended mode
 **./Summary-Paper-SEU.tex
 (Summary-Paper-SEU.tex
@@ -391,32 +391,32 @@ LaTeX Warning: Label `' multiply defined.
 )
 \openout1 = `Summary-Paper-SEU.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Info: Redefining \microtypecontext on input line 94.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Info: Redefining \microtypecontext on input line 95.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 94.
+LaTeX Info: Redefining \showhyphens on input line 95.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -467,7 +467,7 @@ Package color Info: Driver file: pdftex.def on input line 147.
 ("C:\Program Files\MiKTeX 2.9\tex/latex/graphics\dvipsnam.def"
 File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
 ))
-Package hyperref Info: Link coloring ON on input line 94.
+Package hyperref Info: Link coloring ON on input line 95.
 ("C:\Program Files\MiKTeX 2.9\tex/latex/hyperref\nameref.sty"
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 (C:\Users\nicol\AppData\Roaming\MiKTeX\2.9\tex/latex/refcount\refcount.sty
@@ -479,9 +479,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count289
 )
-LaTeX Info: Redefining \ref on input line 94.
-LaTeX Info: Redefining \pageref on input line 94.
-LaTeX Info: Redefining \nameref on input line 94.
+LaTeX Info: Redefining \ref on input line 95.
+LaTeX Info: Redefining \pageref on input line 95.
+LaTeX Info: Redefining \nameref on input line 95.
 (Summary-Paper-SEU.out) (Summary-Paper-SEU.out)
 \@outlinefile=\write3
 \openout3 = `Summary-Paper-SEU.out'.
@@ -551,11 +551,11 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 {C:/Users/nicol/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 142.
+(Font)              <9> on input line 143.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 142.
+(Font)              <5> on input line 143.
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-51.
+52.
 ("C:\Program Files\MiKTeX 2.9\tex/latex/lm\ts1lmr.fd"
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [2] [3] [4] [5] [6] [7] [8] [9] [10] (Summary-Paper-SEU.aux)
@@ -568,11 +568,11 @@ Package rerunfilecheck Info: File `Summary-Paper-SEU.out' has not changed.
 Here is how much of TeX's memory you used:
  12848 strings out of 479590
  190795 string characters out of 2871618
- 515622 words of memory out of 3000000
+ 516995 words of memory out of 3000000
  29585 multiletter control sequences out of 15000+200000
  474260 words of font info for 148 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 68i,11n,70p,572b,362s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 68i,11n,70p,572b,435s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Program Files/M
 iKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTeX 2.9/fonts/e
 nc/dvips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec
@@ -594,7 +594,7 @@ am Files/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Program Files/MiKTeX 2.9
 KTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
 pe1/public/lm/lmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy
 9.pfb>
-Output written on Summary-Paper-SEU.pdf (10 pages, 404399 bytes).
+Output written on Summary-Paper-SEU.pdf (10 pages, 406205 bytes).
 PDF statistics:
  305 PDF objects out of 1000 (max. 8388607)
  58 named destinations out of 1000 (max. 500000)
